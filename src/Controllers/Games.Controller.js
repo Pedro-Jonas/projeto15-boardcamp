@@ -32,7 +32,7 @@ async function postGames (req, res) {
     const validation = gamesSchema.validate(game);
     if (validation.error){
         const messageError = validation.error.message;
-        res.send(messageError).status(400);
+        res.status(400).send(messageError);
         return;
     };
     try {

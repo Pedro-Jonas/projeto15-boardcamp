@@ -21,10 +21,10 @@ async function postCategories (req, res) {
     if (validation.error){
         const messageError = validation.error.message;
         if (messageError === '"name" is not allowed to be empty'){
-            res.send(messageError).status(400)
+            res.status(400).send(messageError);
             return;
         }
-        res.send(messageError).status(400);
+        res.status(400).send(messageError);
         return;
     };
     
