@@ -13,7 +13,7 @@ const gamesSchema = joi.object({
 async function getGames (req, res) {
     const search = req.query.name;
     try{
-        const games = await connection.query('SELECT * FROM games');
+        const games = await connection.query('SELECT games.* , categories.name as "categoryName" FROM games JOIN categories ON games."categoryId" = categories.id;');
         if (search){
             const searchGames = games.rows.filter(element => 
                 element.name.slice(0, search.length) === search || element.name.slice(0, search.length) === search[0].toUpperCase() + search.substring(1)
