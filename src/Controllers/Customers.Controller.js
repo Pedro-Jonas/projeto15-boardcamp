@@ -67,8 +67,34 @@ async function postCustomers (req, res) {
         ,[customer.name, customer.phone, customer.cpf, customer.birthday]);
         res.sendStatus(201);
     } catch {
-
+        res.sendStatus(422);
     };
 };
 
-export { getCustomers, getCustomersId, postCustomers }
+async function putCustomers (req, res) {
+    const customer = req.body;
+    const id = req.params.id;
+    const validation = customersSchema.validate(customer);
+    if (validation.error){
+        const messageError = validation.error.message;
+        res.status(400).send(messageError);
+        return;
+    };
+    try {
+        const customers = await connection.query('SELECT * FROM customers');
+        const verifCpf = customers.rows.find(element => 
+            element.cpf === customer.cpf);
+        if (verifCpf) {
+            res.sendStatus(409);
+            return;
+        };
+        console.log(customer)
+        const update = await connection.query('UPDATE customers SET name=$1, phone=$2, cpf=$3, birthday=$4 WHERE id = $5 ;',
+        [customer.name, customer.phone, customer.cpf, customer.birthday, id]);
+        res.sendStatus(200);
+    } catch {
+        res.sendStatus(422);
+    };
+};
+
+export { getCustomers, getCustomersId, postCustomers, putCustomers };
