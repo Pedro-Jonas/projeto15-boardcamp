@@ -56,7 +56,7 @@ async function postCustomers (req, res) {
     };
 
     try {
-        const customers = await connection.query('SELECT * FROM customers');
+        const customers = await connection.query('SELECT * FROM customers;');
         const verifCpf = customers.rows.find(element => 
             element.cpf === customer.cpf);
         if (verifCpf) {
